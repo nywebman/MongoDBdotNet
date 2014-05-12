@@ -178,6 +178,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RealEstateContext.cs" />
+    <Compile Include="Rentals\Rental.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

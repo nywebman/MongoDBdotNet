@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Web
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDBdotNet", "MongoDBdotNet\MongoDBdotNet.csproj", "{4B598056-74F9-4216-9ECC-6BA3D65AA385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{7BB2EAAF-1CB5-43D5-A503-46649608A304}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +15,10 @@ Global
 		{4B598056-74F9-4216-9ECC-6BA3D65AA385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B598056-74F9-4216-9ECC-6BA3D65AA385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B598056-74F9-4216-9ECC-6BA3D65AA385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB2EAAF-1CB5-43D5-A503-46649608A304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB2EAAF-1CB5-43D5-A503-46649608A304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB2EAAF-1CB5-43D5-A503-46649608A304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB2EAAF-1CB5-43D5-A503-46649608A304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
