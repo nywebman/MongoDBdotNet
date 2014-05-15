@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.Linq;
 
 namespace MongoDBdotNet.Rentals
 {
@@ -12,10 +14,38 @@ namespace MongoDBdotNet.Rentals
     {
         public readonly RealEstateContext context = new RealEstateContext();
 
-        public ActionResult Index()
+        public ActionResult Index(RentalsFilter filters)
         {
-            var rentals = context.Rentals.FindAll();
-            return View(rentals);
+            var rentals = FilterRentals(filters);
+              //  .SetSortOrder(SortBy<Rental>.Ascending(r=>r.Price));
+            var model = new RentalsList
+            {
+                Rentals = rentals,
+                Filters = filters
+            };
+            return View(model);
+        }
+
+        private IEnumerable<Rental> FilterRentals(RentalsFilter filters)
+        {
+            IQueryable<Rental> rentals = context.Rentals.AsQueryable()
+                .OrderBy(r => r.Price);
+            if (filters.MinimumRooms.HasValue)
+            {
+                rentals = rentals
+                    .Where(r => r.NumberOfRooms >= filters.MinimumRooms);
+            }
+
+            if (filters.PriceLimit.HasValue)
+            {
+                var query = Query<Rental>.LTE(r=>r.Price,filters.PriceLimit);
+                rentals = rentals
+                    .Where(r => query.Inject());
+            }
+
+            
+            return rentals;
+
         }
 
 
@@ -59,6 +89,13 @@ namespace MongoDBdotNet.Rentals
         {
             context.Rentals.Remove(Query.EQ("_id", new ObjectId(id)));
             return RedirectToAction("Index");
+        }
+
+        public string PriceDistribution()
+        {
+            return new QueryPriceDistribution()
+            .Run(context.Rentals)
+            .ToJson();
         }
     }
 }

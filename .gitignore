@@ -1,5 +1,7 @@
 */TestResults/*
 */bin/*
+*/Tests/obj/*
+
 
 *.pdb
 
