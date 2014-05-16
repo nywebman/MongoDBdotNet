@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 
 namespace MongoDBdotNet.Rentals
@@ -96,6 +97,60 @@ namespace MongoDBdotNet.Rentals
             return new QueryPriceDistribution()
             .Run(context.Rentals)
             .ToJson();
+        }
+
+        public ActionResult AttachImage(string id)
+        {
+            var rental = GetRental(id);
+            return View(rental);
+        }
+        [HttpPost]
+        public ActionResult AttachImage(string id, HttpPostedFileBase file)
+        {
+            var rental = GetRental(id);
+            if (rental.HasImage())
+            { 
+                DeleteImage(rental);
+            }
+            StoreImage(file, rental);
+            return RedirectToAction("Index");
+        }
+
+        private void DeleteImage(Rental rental)
+        {
+            context.Database.GridFS.DeleteById(new ObjectId(rental.ImageId));
+            //rental.ImageId = null;
+            //context.Rentals.Save(rental);
+            SetRentalImageId(rental.Id, null);
+        }
+
+        private void StoreImage(HttpPostedFileBase file, Rental rental)
+        {
+            //Save rental first so that dont have orphaned image if something goes wrong
+            //but in doing so, need an image id first
+            var ImageId = ObjectId.GenerateNewId();
+            rental.ImageId = ImageId.ToString();
+            context.Rentals.Save(rental);
+            var options = new MongoGridFSCreateOptions { ContentType = file.ContentType };
+            //var fileInfo = 
+            context.Database.GridFS.Upload(file.InputStream, file.FileName, options);
+        }
+
+        public ActionResult GetImage(string id)
+        {
+            var image = context.Database.GridFS
+                .FindOneById(new ObjectId(id));
+            if (image == null)
+            { return HttpNotFound(); }
+            return File(image.OpenRead(),image.ContentType);
+        }
+
+        private void SetRentalImageId(string rentalId, string imageId)
+        {
+            var rentalbyid = Query<Rental>.Where(r => r.Id == rentalId);
+            var setRentalImageId = Update<Rental>.Set(r => r.ImageId, imageId);
+            context.Rentals.Update(rentalbyid, setRentalImageId);
+
         }
     }
 }

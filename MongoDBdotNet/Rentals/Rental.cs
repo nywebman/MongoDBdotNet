@@ -17,6 +17,7 @@ namespace MongoDBdotNet.Rentals
         public List<string> Address = new List<string>();
         [BsonRepresentation(BsonType.Double)]
         public decimal Price { get; set; }
+        public string ImageId { get; set; }
 
         public List<PriceAdjustment> Adjustments = new List<PriceAdjustment>();
 
@@ -34,6 +35,12 @@ namespace MongoDBdotNet.Rentals
             var adjustment = new PriceAdjustment(adjustPrice, Price);
             Adjustments.Add(adjustment);
             Price = adjustPrice.NewPrice;
+        }
+
+
+        public bool HasImage()
+        {
+            return !String.IsNullOrWhiteSpace(ImageId);
         }
     }
 }
