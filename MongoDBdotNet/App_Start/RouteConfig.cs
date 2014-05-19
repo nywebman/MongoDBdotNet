@@ -16,8 +16,9 @@ namespace MongoDBdotNet
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Rentals", action = "Index", id = UrlParameter.Optional }
-            );
+                defaults: new { controller = "Rentals", action = "Index", id = UrlParameter.Optional }//,
+              //  constraints: new RouteValueDictionary { { "id", @"\d" } }
+            );//.DataTokens=new RouteValueDictionary{{"data","value"}};
         }
     }
 }

@@ -32,7 +32,7 @@ namespace MongoDBdotNet
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication();
         }
     }
 }
