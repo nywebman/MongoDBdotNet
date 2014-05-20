@@ -9,12 +9,20 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
+using MongoDBdotNet.App_Start;
 
 namespace MongoDBdotNet.Rentals
 {
     public class RentalsController :Controller
     {
         public readonly RealEstateContext context = new RealEstateContext();
+
+        public readonly IDog dog;
+        public RentalsController(IDog dog)
+        {
+            this.dog = dog;
+        }
+
 
         public ActionResult Index(RentalsFilter filters)
         {
@@ -37,6 +45,8 @@ namespace MongoDBdotNet.Rentals
         }
         public ActionResult glimpsetest(string name = "")
         {
+            Trace.Write(dog.Bark());
+
             Trace.Write("This is a trace");
             Trace.TraceWarning("warning");
             Trace.TraceInformation("info");
