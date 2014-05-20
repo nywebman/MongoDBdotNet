@@ -37,17 +37,18 @@ namespace MongoDBdotNet.Plugins
             var endTimeUTC = DateTime.UtcNow;
             var beginTimeUTC=(context.TabStore.Get("BeginTimeUTC") as DateTime?) ?? DateTime.UtcNow;
 
+            var millisecondsElapsed = endTimeUTC.Subtract(beginTimeUTC).Milliseconds;
 
             var memorySection = new TabSection("Begin Request","End Request");
             memorySection.AddRow()
-                .Column(beginGCTotal)
-                .Column(endGCTotal);
+                .Column(beginGCTotal).Strong()
+                .Column(endGCTotal).Strong().WarnIf(endGCTotal > (long)beginGCTotal);
 
             var timeSection = new TabSection("Start Time UTC", "End Time UTC", "Time Elapsed in MS");
             timeSection.AddRow()
-                .Column(beginTimeUTC)
-                .Column(endTimeUTC)
-                .Column(endTimeUTC.Subtract(beginTimeUTC).Milliseconds);
+                .Column(beginTimeUTC).Emphasis()
+                .Column(endTimeUTC).Emphasis()
+                .Column(millisecondsElapsed).UnderlineIf(millisecondsElapsed>100).Loading();
 
             var plugin = Plugin.Create("Section","Data");
             plugin.AddRow().Column("Memory Info").Column(memorySection);
