@@ -21,13 +21,12 @@ namespace MongoDBdotNet
             ViewEngines.Engines.Add(new RazorViewEngine());
 
 
-            //
-            ModelBinders.Binders.Add(typeof(DateTime), new SpecialBinder());
+            //ModelBinders.Binders.Add(typeof(DateTime), new SpecialBinder());
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-GB");
         }
     }
 }
