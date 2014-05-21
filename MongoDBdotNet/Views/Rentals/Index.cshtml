@@ -70,3 +70,16 @@
     }
 
 </table>
+
+@using (Ajax.BeginForm("message",
+    new AjaxOptions
+    {
+        HttpMethod = "Get",
+        InsertionMode=InsertionMode.Replace,
+        UpdateTargetId="message",
+        }))
+    {
+    <input type="text" name="dateTime" />
+    <input type="submit" />
+    }
+<span id="message">No Message</span>

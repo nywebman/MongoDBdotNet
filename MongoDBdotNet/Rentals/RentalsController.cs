@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +9,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
+using MongoDBdotNet.App_Start;
 
 namespace MongoDBdotNet.Rentals
 {
@@ -15,8 +17,16 @@ namespace MongoDBdotNet.Rentals
     {
         public readonly RealEstateContext context = new RealEstateContext();
 
+        public readonly IDog dog;
+        public RentalsController(IDog dog)
+        {
+            this.dog = dog;
+        }
+
+
         public ActionResult Index(RentalsFilter filters)
         {
+            Session["testdata"] = "testvalue";
             var rentals = FilterRentals(filters);
               //  .SetSortOrder(SortBy<Rental>.Ascending(r=>r.Price));
             var model = new RentalsList
@@ -25,6 +35,26 @@ namespace MongoDBdotNet.Rentals
                 Filters = filters
             };
             return View(model);
+        }
+
+        public string Message(DateTime dateTime)
+        {
+            Trace.TraceInformation("Date was {0}" + dateTime);
+            Trace.TraceInformation("Month was {0}" + dateTime.Month);
+            return dateTime.ToString();
+        }
+        public ActionResult glimpsetest(string name = "")
+        {
+            Trace.Write(dog.Bark());
+
+            Trace.Write("This is a trace");
+            Trace.TraceWarning("warning");
+            Trace.TraceInformation("info");
+            Trace.TraceError("error");
+            Trace.Write("category", "Message");
+            Session["testdata"]="glimpse";
+            ViewBag.Message = String.Format("Hi {0}", name);
+            return View();
         }
 
         private IEnumerable<Rental> FilterRentals(RentalsFilter filters)
